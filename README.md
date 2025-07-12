@@ -22,15 +22,18 @@ provide a visible deterrent against crime, ensuring the safety of
 your premises and personnel. We offer tailored staffing solutions,
 including security guards, patrol services, and access control
 specialists.
+    
 Electronic Security Solutions: We integrate state-of-the-art technology,
 including CCTV surveillance, alarm systems, and access control systems,
 to provide comprehensive security coverage. Our innovative monitoring
 solutions are designed to respond to threats in real-time, ensuring that
-our clients' assets are protected around the clock. 
+our clients' assets are protected around the clock.
+    
 Integrated Security Solutions: We employ a holistic approach to security,
 integrating physical security measures, advanced surveillance systems,
 and state-of-the-art technology. Our solutions are designed to provide
 comprehensive protection against a myriad of risks.
+
 Risk Assessment and Consulting: Our expert consultants conduct
 thorough risk assessments to identify vulnerabilities and develop
 customized security strategies. We provide actionable insights that
