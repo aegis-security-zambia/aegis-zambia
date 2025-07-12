@@ -1,4 +1,4 @@
-# aegis-zambia<!-- Mission Statement (Around line 215) -->
+# Aegis Security Zambia<!-- Mission Statement (Around line 215) -->
 <div class="about-card">
   <h3>Our Mission</h3>
   <p>At Aegis Security Zambia, our mission is to provide
