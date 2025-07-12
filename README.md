@@ -40,3 +40,12 @@ customized security strategies. We provide actionable insights that
 empower our clients to make informed decisions about their security
 measures</p>
 </div>
+<div class="logo">
+  <img src="images/logo.png" alt="Aegis Security Logo" style="height: 50px;">
+</div>
+<p><i class="fas fa-phone"></i> +260 769 673534 (Primary)</p>
+<p><i class="fas fa-map-marker-alt"></i> 190 Luzi Road, Northmead, Lusaka</p>
+:root {
+  --primary-color: #003366; /* Dark blue */
+  --secondary-color: #E8491D; /* Orange accent */
+}
