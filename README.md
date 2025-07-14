@@ -129,7 +129,9 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
-        }
+            <div class="logo">
+  <img src="images/logo.png" alt="Aegis Security Logo" style="height: 50px;">
+</div>        }
         
         .navbar .logo span {
             color: var(--secondary-color);
