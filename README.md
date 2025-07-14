@@ -80,8 +80,8 @@
             padding: 0 1rem;
         }
         
-        .navbar .logo img {
-            height: 60px; 
+        .navbar .logo img {src="images/logo.png"
+        height: 60px; 
         }
         
         .navbar ul {
