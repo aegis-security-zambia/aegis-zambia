@@ -6,9 +6,9 @@
     <style>
         /* Global Styles */
         :root {
-            --primary-color: #153462; /* Dark blue */
-            --secondary-color: #feb139; /* Orange accent */
-            --light-color: #feb139;
+            --primary-color: #003366;
+            --secondary-color: #feb139; /* Changed to your orange color */
+            --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
         }
@@ -63,51 +63,6 @@
             background: var(--secondary-color);
         }
         
-        .text-primary {
-            color: var(--primary-color);
-        }
-        
-        .bg-primary {
-            background: var(--primary-color);
-            color: #fff;
-        }
-        
-        .bg-secondary {
-            background: var(--secondary-color);
-            color: #fff;
-        }
-        
-        .bg-light {
-            background: var(--light-color);
-            color: var(--dark-color);
-        }
-        
-        .bg-dark {
-            background: var(--dark-color);
-            color: #fff;
-        }
-        
-        .py-1 { padding: 1.5rem 0; }
-        .py-2 { padding: 2rem 0; }
-        .py-3 { padding: 3rem 0; }
-        
-        .p-1 { padding: 1.5rem; }
-        .p-2 { padding: 2rem; }
-        .p-3 { padding: 3rem; }
-        
-        .m-1 { margin: 1.5rem; }
-        .m-2 { margin: 2rem; }
-        .m-3 { margin: 3rem; }
-        
-        .text-center { text-align: center; }
-        .text-left { text-align: left; }
-        .text-right { text-align: right; }
-        
-        .lead {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-        }
-        
         /* Navigation */
         .navbar {
             background: #fff;
@@ -115,23 +70,18 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
         }
         
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
+            padding: 0 1rem;
         }
         
-        .navbar .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .navbar .logo span {
-            color: var(--secondary-color);
+        .navbar .logo img {
+            height: 60px; /* Adjust logo height as needed */
         }
         
         .navbar ul {
@@ -157,24 +107,14 @@
             cursor: pointer;
         }
         
-        /* Showcase */
+        /* Showcase - Now with orange background */
         .showcase {
-            background: url('https://images.unsplash.com/photo-1582732970800-4a1c5e946b8a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: var(--secondary-color); /* Solid orange background */
             height: 60vh;
             display: flex;
             align-items: center;
             color: #fff;
             position: relative;
-        }
-        
-        .showcase::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
         }
         
         .showcase .showcase-content {
@@ -186,6 +126,17 @@
         .showcase h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .showcase .btn {
+            background: #fff;
+            color: var(--secondary-color);
+        }
+        
+        .showcase .btn:hover {
+            background: var(--primary-color);
+            color: #fff;
         }
         
         /* About Section */
@@ -295,51 +246,6 @@
         .reason-content h3 {
             margin-bottom: 0.5rem;
             color: var(--primary-color);
-        }
-        
-        /* Team */
-        .team {
-            background: var(--light-color);
-            padding: 4rem 0;
-        }
-        
-        .team h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            color: var(--primary-color);
-        }
-        
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-        
-        .team-member {
-            background: #fff;
-            padding: 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        .team-member img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-        }
-        
-        .team-member h3 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-        
-        .team-member p {
-            color: var(--secondary-color);
-            font-style: italic;
         }
         
         /* Contact */
@@ -460,24 +366,20 @@
             .about-grid,
             .services-grid,
             .reasons,
-            .team-grid,
             .contact-container {
                 grid-template-columns: 1fr;
-            }
-            
-            .team-member img {
-                width: 100px;
-                height: 100px;
             }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation with Logo -->
     <nav class="navbar">
         <div class="container">
-            <div class="logo">AEGIS <span>SECURITY</span></div>
+            <div class="logo">
+                <img src="images/logo.png" alt="Aegis Security Zambia Logo">
+            </div>
             <div class="mobile-menu">
                 <i class="fas fa-bars"></i>
             </div>
@@ -486,13 +388,12 @@
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#why-choose-us">Why Choose Us</a></li>
-                <li><a href="#team">Our Team</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Showcase -->
+    <!-- Showcase with Orange Background -->
     <section class="showcase" id="home">
         <div class="container">
             <div class="showcase-content">
@@ -635,36 +536,6 @@
                             <p>We take the time to understand each client's unique needs and tailor our services accordingly.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team -->
-    <section class="team py-3" id="team">
-        <div class="container">
-            <h2>Our Team</h2>
-            <p class="lead text-center">Experienced professionals dedicated to your security</p>
-            <div class="team-grid">
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member">
-                    <h3>John Banda</h3>
-                    <p>Security Director</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
-                    <h3>Sarah Mwale</h3>
-                    <p>Operations Manager</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Team Member">
-                    <h3>David Phiri</h3>
-                    <p>Technology Specialist</p>
-                </div>
-                <div class="team-member">
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Team Member">
-                    <h3>Grace Lungu</h3>
-                    <p>Client Relations</p>
                 </div>
             </div>
         </div>
