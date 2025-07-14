@@ -1,6 +1,3 @@
-<div class="logo">
-  <img src="images/logo.png" alt="Aegis Security Logo" style="height: 50px;">
-</div>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,11 +6,11 @@
     <style>
         /* Global Styles */
         :root {
-            :root {
-  --primary-color: #003366; /* Dark blue */
-  --secondary-color: #E8491D; /* Orange accent */
- 
-              --max-width: 1100px;
+            --primary-color: #003366;
+            --secondary-color: #e8491d;
+            --light-color: #f4f4f4;
+            --dark-color: #333333;
+            --max-width: 1100px;
         }
         
         * {
@@ -131,9 +128,7 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
-            <div class="logo">
-  <img src="images/logo.png" alt="Aegis Security Logo" style="height: 50px;">
-</div>        }
+        }
         
         .navbar .logo span {
             color: var(--secondary-color);
@@ -327,7 +322,14 @@
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-
+        }
+        
+        .team-member img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 1rem;
         }
         
         .team-member h3 {
