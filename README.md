@@ -12,7 +12,8 @@
             :root {
   --primary-color: #003366; /* Dark blue */
   --secondary-color: #E8491D; /* Orange accent */
-  --max-width: 1100px;
+ 
+              --max-width: 1100px;
         }
         
         * {
