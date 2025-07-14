@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +8,7 @@
         /* Global Styles */
         :root {
             --primary-color: #003366;
-            --secondary-color: #feb139; 
+            --secondary-color: #feb139; /* Changed to your orange color */
             --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
@@ -80,10 +81,8 @@
             padding: 0 1rem;
         }
         
-        .navbar .logo img 
-        <div class="logo">
-  <img src="images/logo.png" alt="Aegis Logo" style="height: 60px;">
-</div>
+        .navbar .logo img {
+            height: 60px; /* Adjust logo height as needed */
         }
         
         .navbar ul {
@@ -115,7 +114,7 @@
             height: 60vh;
             display: flex;
             align-items: center;
-            color: #153462;
+            color: #fff;
             position: relative;
         }
         
@@ -132,13 +131,13 @@
         }
         
         .showcase .btn {
-            background: #153462;
+            background: #fff;
             color: var(--secondary-color);
         }
         
         .showcase .btn:hover {
             background: var(--primary-color);
-            color: #153462;
+            color: #fff;
         }
         
         /* About Section */
