@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="logo">
+  <img src="images/logo.png" alt="Aegis Security Logo" style="height: 50px;">
+</div><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
