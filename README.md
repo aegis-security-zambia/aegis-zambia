@@ -7,8 +7,8 @@
     <style>
         /* Global Styles */
         :root {
-            --primary-color: #003366;
-            --secondary-color: #feb139; /* Changed to your orange color */
+            --primary-color: #153462; /* Updated to dark blue */
+            --secondary-color: #feb139; /* Orange accent */
             --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
@@ -50,7 +50,7 @@
         
         .btn {
             display: inline-block;
-            background: var(--primary-color);
+            background: var(--primary-color); /* Updated to dark blue */
             color: #fff;
             padding: 0.8rem 1.5rem;
             border: none;
@@ -62,6 +62,51 @@
         
         .btn:hover {
             background: var(--secondary-color);
+        }
+        
+        .text-primary {
+            color: var(--primary-color);
+        }
+        
+        .bg-primary {
+            background: var(--primary-color);
+            color: #fff;
+        }
+        
+        .bg-secondary {
+            background: var(--secondary-color);
+            color: #fff;
+        }
+        
+        .bg-light {
+            background: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .bg-dark {
+            background: var(--dark-color);
+            color: #fff;
+        }
+        
+        .py-1 { padding: 1.5rem 0; }
+        .py-2 { padding: 2rem 0; }
+        .py-3 { padding: 3rem 0; }
+        
+        .p-1 { padding: 1.5rem; }
+        .p-2 { padding: 2rem; }
+        .p-3 { padding: 3rem; }
+        
+        .m-1 { margin: 1.5rem; }
+        .m-2 { margin: 2rem; }
+        .m-3 { margin: 3rem; }
+        
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        
+        .lead {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
         }
         
         /* Navigation */
@@ -81,10 +126,9 @@
             padding: 0 1rem;
         }
         
-        .navbar .logo img {
-            height: 80px; /* Increased from 60px */
-            width: auto; /* Maintains aspect ratio */
-            transition: all 0.3s ease; /* Smooth hover effect */
+        .logo img {
+            height: 60px; /* Adjusted logo size */
+            width: auto;
         }
         
         .navbar ul {
@@ -110,14 +154,24 @@
             cursor: pointer;
         }
         
-        /* Showcase - Now with orange background */
+        /* Showcase */
         .showcase {
-            background: var(--secondary-color); /* Solid orange background */
+            background: url('https://images.unsplash.com/photo-1582732970800-4a1c5e946b8a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
             height: 60vh;
             display: flex;
             align-items: center;
-            color: #fff;
+            color: var(--primary-color); /* Updated text color to dark blue */
             position: relative;
+        }
+        
+        .showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7); /* Light overlay for better text visibility */
         }
         
         .showcase .showcase-content {
@@ -129,17 +183,16 @@
         .showcase h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            color: var(--primary-color); /* Ensures dark blue color */
         }
         
         .showcase .btn {
-            background: #fff;
-            color: var(--secondary-color);
+            background: var(--primary-color); /* Dark blue button */
+            color: white;
         }
         
         .showcase .btn:hover {
-            background: var(--primary-color);
-            color: #fff;
+            background: var(--secondary-color); /* Orange on hover */
         }
         
         /* About Section */
@@ -377,7 +430,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation with Logo -->
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">
@@ -396,7 +449,7 @@
         </div>
     </nav>
 
-    <!-- Showcase with Orange Background -->
+    <!-- Showcase -->
     <section class="showcase" id="home">
         <div class="container">
             <div class="showcase-content">
