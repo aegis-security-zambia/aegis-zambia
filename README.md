@@ -80,7 +80,10 @@
             padding: 0 1rem;
         }
         
-        .navbar .logo img  
+        .navbar .logo img 
+        <div class="logo">
+  <img src="images/logo.png" alt="Aegis Logo" style="height: 60px;">
+</div>
         }
         
         .navbar ul {
