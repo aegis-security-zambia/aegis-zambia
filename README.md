@@ -7,8 +7,8 @@
     <style>
         /* Global Styles */
         :root {
-            --primary-color: #153462; /* Updated to dark blue */
-            --secondary-color: #feb139; /* Orange accent */
+            --primary-color: #153462; /* New dark blue color */
+            --secondary-color: #feb139; /* Yellow accent */
             --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
@@ -50,7 +50,7 @@
         
         .btn {
             display: inline-block;
-            background: var(--primary-color); /* Updated to dark blue */
+            background: var(--primary-color);
             color: #fff;
             padding: 0.8rem 1.5rem;
             border: none;
@@ -62,6 +62,7 @@
         
         .btn:hover {
             background: var(--secondary-color);
+            color: var(--primary-color);
         }
         
         .text-primary {
@@ -116,18 +117,17 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 0.5rem 0;
         }
         
         .navbar .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 1rem;
+            padding: 1rem;
         }
         
-        .logo img {
-            height: 60px; /* Adjusted logo size */
+        .navbar .logo img {
+            height: 100px;
             width: auto;
         }
         
@@ -156,22 +156,12 @@
         
         /* Showcase */
         .showcase {
-            background: url('https://images.unsplash.com/photo-1582732970800-4a1c5e946b8a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            background: var(--secondary-color); /* Solid yellow background */
             height: 60vh;
             display: flex;
             align-items: center;
-            color: var(--primary-color); /* Updated text color to dark blue */
+            color: var(--primary-color); /* Dark blue text */
             position: relative;
-        }
-        
-        .showcase::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.7); /* Light overlay for better text visibility */
         }
         
         .showcase .showcase-content {
@@ -183,16 +173,7 @@
         .showcase h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: var(--primary-color); /* Ensures dark blue color */
-        }
-        
-        .showcase .btn {
-            background: var(--primary-color); /* Dark blue button */
-            color: white;
-        }
-        
-        .showcase .btn:hover {
-            background: var(--secondary-color); /* Orange on hover */
+            color: var(--primary-color);
         }
         
         /* About Section */
