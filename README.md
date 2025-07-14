@@ -113,7 +113,7 @@
             height: 60vh;
             display: flex;
             align-items: center;
-            color: #fff;
+            color: #153462;
             position: relative;
         }
         
@@ -130,13 +130,13 @@
         }
         
         .showcase .btn {
-            background: #fff;
+            background: #153462;
             color: var(--secondary-color);
         }
         
         .showcase .btn:hover {
             background: var(--primary-color);
-            color: #fff;
+            color: #153462;
         }
         
         /* About Section */
