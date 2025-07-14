@@ -7,7 +7,7 @@
         /* Global Styles */
         :root {
             --primary-color: #003366;
-            --secondary-color: #feb139; /* Changed to your orange color */
+            --secondary-color: #feb139; 
             --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
@@ -81,7 +81,7 @@
         }
         
         .navbar .logo img {
-            height: 60px; /* Adjust logo height as needed */
+            height: 60px; 
         }
         
         .navbar ul {
