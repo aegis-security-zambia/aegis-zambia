@@ -323,14 +323,7 @@
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-        }
-        
-        .team-member img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            margin-bottom: 1rem;
+
         }
         
         .team-member h3 {
