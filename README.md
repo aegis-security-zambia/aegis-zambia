@@ -6,8 +6,8 @@
     <style>
         /* Global Styles */
         :root {
-            --primary-color: #003366;
-            --secondary-color: #e8491d;
+            --primary-color: #003366; /* Dark blue */
+            --secondary-color: #E8491D; /* Orange accent */
             --light-color: #f4f4f4;
             --dark-color: #333333;
             --max-width: 1100px;
