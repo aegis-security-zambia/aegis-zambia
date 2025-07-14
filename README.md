@@ -9,10 +9,10 @@
     <style>
         /* Global Styles */
         :root {
-            --primary-color: #003366;
-            --secondary-color: #e8491d;
-            --light-color: #f4f4f4;
-            --dark-color: #333333;
+            :root {
+  --primary-color: #003366; /* Dark blue */
+  --secondary-color: #E8491D; /* Orange accent */
+}
             --max-width: 1100px;
         }
         
