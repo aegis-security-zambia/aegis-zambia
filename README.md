@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -82,7 +82,9 @@
         }
         
         .navbar .logo img {
-            height: 60px; /* Adjust logo height as needed */
+            height: 80px; /* Increased from 60px */
+            width: auto; /* Maintains aspect ratio */
+            transition: all 0.3s ease; /* Smooth hover effect */
         }
         
         .navbar ul {
