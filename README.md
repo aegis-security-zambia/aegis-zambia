@@ -127,7 +127,7 @@
         }
         
         .navbar .logo img {
-            height: 100px;
+            height: 200px;
             width: auto;
         }
         
