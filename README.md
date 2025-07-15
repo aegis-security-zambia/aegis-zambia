@@ -598,7 +598,7 @@
                     <p><i class="fas fa-phone"></i> +260 777 944344</p>
                     <p><i class="fas fa-envelope"></i> info@aegiszambia.com</p>
                     <p><i class="fas fa-map-marker-alt"></i> 90 Luzi Road, Northmead, Lusaka - Zambia</p>
-                    <p><i class="fas fa-globe"></i> https://aegis-security-zambia.github.io/aegis-zambia/ </p>
+                    <p><i class="fas fa-globe"></i> www.aegis-security-zambia.github.io/aegis-zambia/ </p>
                 </div>
                 <div class="contact-form">
                     <h3>Send Us a Message</h3>
