@@ -128,7 +128,7 @@
         }
         
         .logo img {
-            height: 50px;
+            height: 160px;
             width: auto;
         }
         
