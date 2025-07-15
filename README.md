@@ -443,8 +443,8 @@
     <section class="showcase" id="home">
         <div class="container">
             <div class="showcase-content">
-                <h1>Premium Security Solutions for Zambia</h1>
-                <p class="lead">Innovative security services tailored to your unique needs. Your safety is our mission.</p>
+                <h1>Aegis Security Zambia - Premium Security Services</h1>
+                <p class="lead">Innovative security services tailored to your unique needs. Redefined security, secure your assets, elevate your confidence.</p>
                 <a href="#contact" class="btn">Get in Touch</a>
             </div>
         </div>
@@ -597,7 +597,7 @@
                     <p><i class="fas fa-phone"></i> +260 769 673534</p>
                     <p><i class="fas fa-phone"></i> +260 777 944344</p>
                     <p><i class="fas fa-envelope"></i> info@aegiszambia.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> 190 Luzi Road, Northmead, Lusaka - Zambia</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 90 Luzi Road, Northmead, Lusaka - Zambia</p>
                     <p><i class="fas fa-globe"></i> www.aegiszambia.com</p>
                 </div>
                 <div class="contact-form">
