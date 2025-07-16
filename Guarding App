@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis GuardTrack - Security Monitoring</title>
+    <meta name="description" content="Aegis Security Zambia's guard monitoring solution with online and USSD support">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+        
+        // USSD code handling
+        const USSD_CODE = '*123#';
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for USSD simulation */
+        .ussd-screen {
+            background-color: #e0e0e0;
+            font-family: monospace;
+            border-radius: 8px;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .ussd-input {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 8px;
+            width: 100%;
+        }
+        
+        /* Animation for guard tracking */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Print styles for reports */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+                font-size: 12pt;
+            }
+            
+            .report-container {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Mobile App Interface -->
+    <div id="mobile-app" class="md:hidden">
+        <!-- Header -->
+        <header class="bg-blue-900 text-white p-4 shadow-md">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-shield-alt text-2xl mr-3"></i>
+                    <h1 class="text-xl font-bold">Aegis Guard Monitoring</h1>
+                </div>
+                <div class="text-sm">
+                    <span id="mobile-time" class="mr-2">12:45 PM</span>
+                    <span id="mobile-battery"><i class="fas fa-battery-three-quarters"></i> 75%</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="p-4">
+            <!-- Status Bar -->
+            <div class="bg-white rounded-lg shadow p-4 mb-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="text-sm text-gray-500">Current Status</span>
+                        <h2 class="text-xl font-bold text-green-600">On Duty</h2>
+                    </div>
+                    <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <i class="fas fa-check-circle mr-1"></i> Active
+                    </div>
+                </div>
+                
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Shift</span>
+                        <p class="font-medium">Day Shift (06:00 - 18:00)</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <span class="text-sm text-gray-500">Location</span>
+                        <p class="font-medium">Lusaka CBD</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg shadow p-4 mb-4">
+                <h3 class="font-bold text-lg mb-3">Quick Actions</h3>
+                <div class="grid grid-cols-3 gap-3">
+                    <button class="bg-blue-100 text-blue-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-bell text-xl mb-1"></i>
+                        <span class="text-sm">Alert</span>
+                    </button>
+                    <button class="bg-green-100 text-green-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-map-marker-alt text-xl mb-1"></i>
+                        <span class="text-sm">Check In</span>
+                    </button>
+                    <button class="bg-purple-100 text-purple-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-camera text-xl mb-1"></i>
+                        <span class="text-sm">Photo</span>
+                    </button>
+                    <button class="bg-yellow-100 text-yellow-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-file-alt text-xl mb-1"></i>
+                        <span class="text-sm">Report</span>
+                    </button>
+                    <button class="bg-red-100 text-red-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-phone-alt text-xl mb-1"></i>
+                        <span class="text-sm">SOS</span>
+                    </button>
+                    <button class="bg-gray-100 text-gray-800 p-3 rounded-lg flex flex-col items-center">
+                        <i class="fas fa-ellipsis-h text-xl mb-1"></i>
+                        <span class="text-sm">More</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- USSD Simulator (for basic phones) -->
+            <div class="bg-white rounded-lg shadow p-4 mb-4">
+                <h3 class="font-bold text-lg mb-3">USSD Mode (Works Without Internet)</h3>
+                <div class="ussd-screen mb-3" id="ussd-display">
+                    Aegis GuardTrack Zambia<br>
+                    USSD Monitoring System<br><br>
+                    1. Check Status<br>
+                    2. Send Location<br>
+                    3. Emergency Alert<br>
+                    4. Generate Report<br>
+                    5. Check Schedule<br>
+                    6. Report Incident<br><br>
+                    Enter option:
+                </div>
+                <input type="text" class="ussd-input rounded mb-2" id="ussd-input" placeholder="Dial *123# on your phone">
+                <div class="flex space-x-2">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded flex-1" onclick="sendUSSD()">
+                        <i class="fas fa-mobile-alt mr-2"></i> Simulate USSD
+                    </button>
+                    <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded" onclick="clearUSSD()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mt-3 bg-blue-50 p-3 rounded-lg">
+                    <p class="text-sm font-medium text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Real USSD Functionality: Dial *123# from any phone to access guard tracking
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="font-bold text-lg mb-3">Recent Activity</h3>
+                <div class="space-y-3">
+                    <div class="flex items-start">
+                        <div class="bg-green-100 text-green-800 p-2 rounded-full mr-3">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">Check-in at Site A</p>
+                            <p class="text-sm text-gray-500">Today, 06:15 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">Patrol completed</p>
+                            <p class="text-sm text-gray-500">Today, 09:30 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-yellow-100 text-yellow-800 p-2 rounded-full mr-3">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <p class="font-medium">Incident reported</p>
+                            <p class="text-sm text-gray-500">Yesterday, 4:20 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-lg flex justify-around items-center p-2 border-t border-gray-200">
+            <a href="#" class="text-blue-600 p-2 flex flex-col items-center">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#" class="text-gray-500 p-2 flex flex-col items-center">
+                <i class="fas fa-map text-xl"></i>
+                <span class="text-xs">Map</span>
+            </a>
+            <a href="#" class="text-gray-500 p-2 flex flex-col items-center">
+                <i class="fas fa-tasks text-xl"></i>
+                <span class="text-xs">Tasks</span>
+            </a>
+            <a href="#" class="text-gray-500 p-2 flex flex-col items-center">
+                <i class="fas fa-chart-line text-xl"></i>
+                <span class="text-xs">Reports</span>
+            </a>
+            <a href="#" class="text-gray-500 p-2 flex flex-col items-center">
+                <i class="fas fa-user text-xl"></i>
+                <span class="text-xs">Profile</span>
+            </a>
+        </nav>
+    </div>
+    
+    <!-- Web Admin Interface -->
+    <div id="web-admin" class="hidden md:block min-h-screen">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 bg-blue-900 text-white shadow-lg">
+            <div class="p-4 flex items-center border-b border-blue-800">
+                <i class="fas fa-shield-alt text-3xl mr-3"></i>
+                <h1 class="text-xl font-bold">Aegis Security</h1>
+            </div>
+            
+            <nav class="p-4">
+                <div class="mb-6">
+                    <h3 class="text-xs uppercase text-blue-300 font-bold mb-3">Dashboard</h3>
+                    <a href="#" class="flex items-center py-2 px-3 bg-blue-800 rounded-lg">
+                        <i class="fas fa-tachometer-alt mr-3"></i>
+                        <span>Overview</span>
+                    </a>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xs uppercase text-blue-300 font-bold mb-3">Monitoring</h3>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-map-marked-alt mr-3"></i>
+                        <span>Live Tracking</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-user-shield mr-3"></i>
+                        <span>Guards Status</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg">
+                        <i class="fas fa-bell mr-3"></i>
+                        <span>Alerts</span>
+                    </a>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xs uppercase text-blue-300 font-bold mb-3">Management</h3>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-users mr-3"></i>
+                        <span>Personnel</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-building mr-3"></i>
+                        <span>Sites</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-calendar-alt mr-3"></i>
+                        <span>Schedules</span>
+                    </a>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xs uppercase text-blue-300 font-bold mb-3">Reports</h3>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-file-alt mr-3"></i>
+                        <span>Daily Reports</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg mb-2">
+                        <i class="fas fa-chart-pie mr-3"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#" class="flex items-center py-2 px-3 hover:bg-blue-800 rounded-lg">
+                        <i class="fas fa-file-export mr-3"></i>
+                        <span>Export Data</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="ml-64 p-8">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Guard Monitoring Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="relative">
+                            <i class="fas fa-bell text-xl text-gray-600"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                        </div>
+                        <div class="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">AD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Active Guards</p>
+                            <h3 class="text-3xl font-bold">142</h3>
+                        </div>
+                        <div class="bg-green-100 text-green-800 p-3 rounded-full">
+                            <i class="fas fa-user-shield text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i> 12% from yesterday</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Active Sites</p>
+                            <h3 class="text-3xl font-bold">28</h3>
+                        </div>
+                        <div class="bg-blue-100 text-blue-800 p-3 rounded-full">
+                            <i class="fas fa-building text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i> 2 new sites</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Alerts Today</p>
+                            <h3 class="text-3xl font-bold">7</h3>
+                        </div>
+                        <div class="bg-yellow-100 text-yellow-800 p-3 rounded-full">
+                            <i class="fas fa-exclamation-triangle text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-red-600 text-sm font-medium"><i class="fas fa-arrow-down mr-1"></i> 3% from yesterday</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500">Check-ins Today</p>
+                            <h3 class="text-3xl font-bold">328</h3>
+                        </div>
+                        <div class="bg-purple-100 text-purple-800 p-3 rounded-full">
+                            <i class="fas fa-map-marker-alt text-xl"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <span class="text-green-600 text-sm font-medium"><i class="fas fa-arrow-up mr-1"></i> 8% from yesterday</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map and Guard Status -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Live Guard Tracking</h3>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg text-sm">All Guards</button>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg text-sm">Lusaka</button>
+                            <button class="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg text-sm">Ndola</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Placeholder -->
+                    <div class="bg-gray-200 rounded-lg h-64 flex items-center justify-center pulse-animation">
+                        <div class="text-center">
+                            <i class="fas fa-map-marked-alt text-4xl text-blue-600 mb-2"></i>
+                            <p class="font-medium">Interactive Guard Tracking Map</p>
+                            <p class="text-sm text-gray-600">Showing 142 active guards across 28 sites</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="h-2 bg-green-500 rounded-full"></div>
+                            <p class="text-sm mt-1">On Duty (112)</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="h-2 bg-yellow-500 rounded-full"></div>
+                            <p class="text-sm mt-1">On Break (18)</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="h-2 bg-red-500 rounded-full"></div>
+                            <p class="text-sm mt-1">Alert (7)</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="h-2 bg-gray-300 rounded-full"></div>
+                            <p class="text-sm mt-1">Offline (5)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold">Recent Alerts</h3>
+                        <a href="#" class="text-blue-600 text-sm">View All</a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-red-100 text-red-800 p-2 rounded-full mr-3">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Emergency button pressed</p>
+                                <p class="text-sm text-gray-500">Guard #142 at Site 15 (Lusaka CBD)</p>
+                                <p class="text-xs text-gray-400">10 minutes ago</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 text-yellow-800 p-2 rounded-full mr-3">
+                                <i class="fas fa-user-slash"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Guard not checked in</p>
+                                <p class="text-sm text-gray-500">Guard #87 at Site 8 (Ndola Industrial)</p>
+                                <p class="text-xs text-gray-400">1 hour ago</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 text-blue-800 p-2 rounded-full mr-3">
+                                <i class="fas fa-door-open"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Unauthorized entry</p>
+                                <p class="text-sm text-gray-500">Site 22 (Kabwe Storage)</p>
+                                <p class="text-xs text-gray-400">2 hours ago</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 text-purple-800 p-2 rounded-full mr-3">
+                                <i class="fas fa-battery-quarter"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Low device battery</p>
+                                <p class="text-sm text-gray-500">Guard #56 at Site 3 (Livingstone)</p>
+                                <p class="text-xs text-gray-400">3 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enhanced Reports Section -->
+            <div class="bg-white rounded-lg shadow p-6 mb-8 report-container" id="report-section">
+                <div class="flex flex-wrap justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold">Client Reporting</h3>
+                    <div class="flex space-x-2 mt-2 md:mt-0">
+                        <select class="border rounded-lg px-3 py-2 text-sm" id="report-period">
+                            <option>Daily</option>
+                            <option>Weekly</option>
+                            <option selected>Monthly</option>
+                            <option>Custom</option>
+                        </select>
+                        <select class="border rounded-lg px-3 py-2 text-sm" id="report-site">
+                            <option>All Sites</option>
+                            <option>Lusaka CBD</option>
+                            <option>Ndola Industrial</option>
+                            <option>Kabwe Storage</option>
+                        </select>
+                        <button onclick="generateReport()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm flex items-center">
+                            <i class="fas fa-sync-alt mr-2"></i> Generate
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-lg font-bold">Client Report - June 2023</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm flex items-center">
+                            <i class="fas fa-download mr-2"></i> PDF
+                        </button>
+                        <button class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm flex items-center">
+                            <i class="fas fa-download mr-2"></i> Excel
+                        </button>
+                        <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm flex items-center no-print">
+                            <i class="fas fa-print mr-2"></i> Print
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Report Header -->
+                <div class="mb-6 border-b pb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-2xl font-bold">Aegis Security Zambia</h2>
+                            <p class="text-gray-600">Guard Monitoring Report</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-medium">Prepared for: ABC Corporation</p>
+                            <p class="text-gray-600">Report Date: June 30, 2023</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Executive Summary -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-bold mb-2
+    <!-- App Initialization Script -->
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update time every minute
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            // Initialize USSD functionality
+            initUSSD();
+            
+            // Load initial data
+            loadGuardData();
+        });
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('mobile-time').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        function initUSSD() {
+            // USSD simulation logic
+            window.sendUSSD = function() {
+                const input = document.getElementById('ussd-input');
+                const display = document.getElementById('ussd-display');
+                
+                if (input.value === '*123#') {
+                    display.innerHTML = `Aegis GuardTrack Zambia<br>
+                    USSD Monitoring System<br><br>
+                    1. Check Status<br>
+                    2. Send Location<br>
+                    3. Emergency Alert<br>
+                    4. Generate Report<br>
+                    5. Check Schedule<br>
+                    6. Report Incident<br><br>
+                    Enter option:`;
+                } else {
+                    // Process USSD menu options
+                    // ... (add full USSD menu handling logic)
+                }
+            };
+        }
+
+        function generateReport() {
+            // Report generation logic
+            // Can export as PDF/Excel
+        }
+
+        function loadGuardData() {
+            // Load guard data from API or local storage
+        }
+    </script>
+</body>
+</html>
